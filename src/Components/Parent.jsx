@@ -1,45 +1,75 @@
 import React, { useState } from 'react';
+import {Table,Button} from 'antd';
+
 import Child from './Child'
+
 const Parent = () => {
     const[TaskArray, setTaskArray] = useState([])
-
     const addTask = (taskfromchild) => {
         setTaskArray([...TaskArray,taskfromchild])
     }
+
+   
     console.log(TaskArray)
     
-    return (
-        <div>
-         
-          <div className='mt-7 mx-auto sm:w-11/12 md:w-4/5 bg-sky-500 overflow-x-auto rounded-md '>
-            
-            <div className="table w-[98%] mx-auto my-2 rounded-md bg-sky-200 ">
-                    <div className="table-header-group">
-                        <div className="table-row ">
-                            <div className="table-cell border  border-blue-500 w-10">No</div>
-                            <div className="table-cell border  border-blue-500 sm:w-60 lg:w-3/4">Task title</div>
-                            <div className="table-cell border  border-blue-500">Date</div>
-                            <div className="table-cell border   border-blue-500">Actions</div>
-                        </div>
-                    </div>
-                    <div className="table-row-group">
-                        {TaskArray.map((taskfromchild,index)=>(
-                            <div className="table-row" >
-                            <div className="table-cell border  border-blue-500"></div>
-                            <div className="table-cell border  border-blue-500" key={index}>{taskfromchild}</div>
-                            <div className="table-cell border  border-blue-500"></div>
-                            <div className="table-cell border  border-blue-500"></div>
-                        </div>
-                        ))}
-                        
-                    </div>
-                </div> 
+    const columns = [
+      {
+        title: 'No',
+        width: 50, // A small fixed width is fine for this column
+        key: 'index',
+        responsive: ['xs', 'sm', 'md', 'lg'],
+        render: (text, record, index) => <span>{index + 1}</span>,
+      },
+      {
+        title: 'Task',
+        dataIndex: 'task',
+        key: 'task',
+        responsive: ['xs', 'sm', 'md', 'lg'],
+        render: (text) => (
+          <div className="w-full xs:w-[100px] sm:w-[200px] lg:w-[700px] whitespace-normal break-words">
+            {text}
           </div>
-           
+        ),
+      },
+      {
+        title: 'Date',
+        dataIndex: 'date',
+        key: 'date',
+        responsive: ['xs', 'sm', 'md', 'lg'],
+        render: (text) => (
+          <div className="whitespace-normal break-words">
+            {text}
+          </div>
+        ),
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        responsive: ['xs', 'sm', 'md', 'lg'],
         
-            <Child addTask={addTask}/>
-        </div>
-    );
+      },
+    ];
+    const data = TaskArray.map((task, index) => ({
+      key: index + 1,
+      task: task.task, // Correctly access the task text
+      date: task.date, // Correctly access the date
+    }));
+  
+    return (
+      <>
+          <Child addTask={addTask}/>
+          <div className="overflow-x-auto p-4 md:w-11/12 mx-auto">
+        <Table
+          columns={columns}
+          dataSource={data}
+          pagination={false}
+          scroll={{ x: true }} // Allows horizontal scrolling if needed
+          className="w-full"
+        />
+      </div>
+      </>
+  
+      );
 };
 
 export default Parent;
