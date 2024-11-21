@@ -120,7 +120,7 @@ const ToDoPage = () => {
                   <td className="p-2 border border-blue-700">{index + 1}</td>
                   <td className="p-2 border border-blue-700">{item.Task}</td>
                   <td className="p-2 border border-blue-700">
-                    {item.Start} - {item.End}
+                    {item.Start} / {item.End}
                   </td>
                   <td className="p-2 border border-blue-700">
                     <button className="me-2" onClick={() => editTask(index)}>
